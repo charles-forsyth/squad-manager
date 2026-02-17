@@ -39,30 +39,39 @@ Your new team is ready to work 24/7. No coffee breaks. No complaints.
 
 ## 🚀 Installation
 
-Since Squad Manager is a skill for the Gemini CLI, you can currently run it directly from the source.
+### Option 1: Install as a Gemini Skill (Recommended)
+Install directly from GitHub to use the `/squad` commands within Gemini:
+
+```bash
+gemini skills install https://github.com/charles-forsyth/squad-manager.git
+```
+
+**Note:** To use the scripts (Director Mode) directly from your shell, add the skill's script directory to your PATH:
+```bash
+export PATH="$HOME/.gemini/skills/squad-manager/scripts:$PATH"
+```
+
+### Option 2: Clone for Local Development
+If you want to modify the squad or run scripts locally without installing as a skill:
+1.  **Clone:** `git clone https://github.com/charles-forsyth/squad-manager.git`
+2.  **Setup:** `cd squad-manager && chmod +x scripts/*.sh`
+3.  **Path:** `export PATH="$PWD/scripts:$PATH"`
 
 ### Prerequisites
 *   **Git:** `sudo apt install git` (or equivalent)
 *   **GitHub CLI (gh):** `sudo apt install gh`
-*   **Python (uv):** `curl -LsSf https://astral.sh/uv/install.sh | sh`
 *   **Gemini CLI:** Ensure you have the Gemini CLI installed and configured.
 
-### Setup
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/charles-forsyth/squad-manager.git
-    cd squad-manager
-    ```
+---
 
-2.  **Make Scripts Executable:**
-    ```bash
-    chmod +x scripts/*.sh
-    ```
+## 📦 Publishing & Sharing
 
-3.  **(Optional) Add to PATH:**
-    Add the `scripts` directory to your PATH to use `director.sh` directly.
+There is currently no centralized "Extension Gallery" for Gemini skills. To share your squad with the world:
+
+1.  **Push to GitHub:** Ensure your repository is public.
+2.  **Share the URL:** Users can install your skill immediately using:
     ```bash
-    export PATH="$PWD/scripts:$PATH"
+    gemini skills install https://github.com/your-username/squad-manager.git
     ```
 
 ---
