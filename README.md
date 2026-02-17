@@ -1,168 +1,96 @@
 # Squad Manager 🤖🚀
-**The Ultimate Autonomous Development Team for Gemini CLI**
+**The Ultimate Autonomous Development Agency for Gemini CLI**
 
-Stop babysitting your AI. Start directing a squad.
+> *"The age of prompt-engineering is over. The age of Squad-Directing has begun."*
 
-**Squad Manager** is not just another coding assistant. It's a **fully autonomous software development agency** living in your terminal. You give the order, and a specialized team of AI agents executes the entire engineering lifecycle—from architecture to release.
+**Squad Manager** is not a coding assistant. It is a **fully autonomous software development agency** living in your terminal. You are the Director. They are the Squad.
+
+You give one high-level mission. They execute the entire engineering lifecycle—from architectural design to CI/CD release.
 
 ---
 
-## 🔥 Features
+## 🤯 The Recursion Proof
+**This tool built itself.** 
+The code, the scripts, and this very README were architected, written, tested, and released by the Squad Manager itself, running in recursive mode.
+
+---
+
+## 🔥 Features that Ship
 
 ### 🎬 Director Mode: One Prompt -> Full App
-Forget chat-pong. With **Director Mode**, you provide **one high-level mission**, and the Squad takes over.
+Forget chatting back and forth. With **Director Mode**, you provide **one mission**, and the Squad takes over.
 
 ```bash
-gemini "/squad build 'Create a snake game in Python'"
+gemini "/squad build 'Create a snake game in Python using Pygame'"
 ```
 
-The Director orchestrates the entire workflow:
-1.  **🏗️ Architect:** Designs the system & chooses the best stack (Python/Node/Go).
-2.  **🛡️ Sentinel:** Writes the test suite *before* a single line of code is written (TDD).
-3.  **📦 DevOps:** Initializes the repo, manages `pyproject.toml` or `package.json`, and bumps versions.
-4.  **🛠️ Grunt:** Implements the actual code to pass the tests.
-5.  **👿 Gatekeeper:** Audits the PR, runs the final gauntlet, and enforces quality before merging.
-6.  **🚀 DevOps (Release):** Tags the version and creates a GitHub Release.
-7.  **🎮 UAT:** Verifies the installation and functionality from a user's perspective.
+The Director orchestrates the workflow:
+1.  **🏗️ Architect:** Designs the system, chooses the stack (Python/Node/Go), and writes the `design_doc.md`.
+2.  **🛡️ Sentinel:** Writes the **Test Suite** first (TDD) based on the design.
+3.  **📦 DevOps:** Initializes the repo, `pyproject.toml`, and git branches.
+4.  **🛠️ Grunt:** Implements the code to pass the tests. Runs the "Gauntlet" (Lint/TypeCheck).
+5.  **👿 Gatekeeper:** Audits the PR for security and logic. Merges only if perfect.
+6.  **🎮 UAT:** Verifies the installation and functionality like a human user.
 
 ### 👥 The Agent Roster
-Your new team is ready to work 24/7. No coffee breaks. No complaints.
+Your new team works 24/7. They don't need coffee. They don't complain about legacy code.
 
-*   **🏗️ Architect:** The visionary. Decides the tech stack, file structure, and high-level design in `design_doc.md`.
-*   **🛠️ Grunt:** The builder. Writes the implementation code. Polyglot expert in Python, Node, and Go.
-*   **🛡️ Sentinel:** The protector. Writes comprehensive test suites (pytest, vitest, etc.) before implementation.
-*   **📦 DevOps:** The release manager. Handles packaging, versioning, git tags, and release notes.
-*   **👿 Gatekeeper:** The enforcer. Strict CI/CD auditor that prevents bad code from reaching `master`.
-*   **🎮 UAT:** The user. Actually installs and verifies the application works as expected.
+*   **Architect:** The visionary. Handles `design_doc.md` and ADRs.
+*   **Grunt:** The builder. Polyglot coder (Python `uv`, Node `npm`, Go `mod`).
+*   **Sentinel:** The protector. Enforces 100% test coverage.
+*   **DevOps:** The release manager. Handles SemVer, Git Tags, and GitHub Releases.
+*   **Gatekeeper:** The enforcer. Strict CI/CD auditor.
+*   **UAT:** The user. Runs "Black Box" verification.
+
+### 🌐 Polyglot Powerhouse
+The Squad speaks your language.
+*   **Python:** Uses `uv`, `ruff`, `mypy`.
+*   **Node.js:** Uses `npm`, `eslint`, `vitest`.
+*   **Go:** Uses `go mod`, `golangci-lint`.
 
 ---
 
 ## 🚀 Installation
 
-### Option 1: Install as a Gemini Skill (Recommended)
-Install directly from GitHub to use the `/squad` commands within Gemini:
+Install simply with `uv`:
 
 ```bash
-gemini skills install https://github.com/charles-forsyth/squad-manager.git
+uv tool install squad-manager
 ```
 
-**Note:** To use the scripts (Director Mode) directly from your shell, add the skill's script directory to your PATH:
-```bash
-export PATH="$HOME/.gemini/skills/squad-manager/scripts:$PATH"
-```
-
-### Option 2: Clone for Local Development
-If you want to modify the squad or run scripts locally without installing as a skill:
-1.  **Clone:** `git clone https://github.com/charles-forsyth/squad-manager.git`
-2.  **Setup:** `cd squad-manager && chmod +x scripts/*.sh`
-3.  **Path:** `export PATH="$PWD/scripts:$PATH"`
-
-### Prerequisites
-*   **Git:** `sudo apt install git` (or equivalent)
-*   **GitHub CLI (gh):** `sudo apt install gh`
-*   **Gemini CLI:** Ensure you have the Gemini CLI installed and configured.
-
----
-
-## 📦 Publishing & Sharing
-
-There is currently no centralized "Extension Gallery" for Gemini skills. To share your squad with the world:
-
-1.  **Push to GitHub:** Ensure your repository is public.
-2.  **Share the URL:** Users can install your skill immediately using:
-    ```bash
-    gemini skills install https://github.com/your-username/squad-manager.git
-    ```
-
----
-
-## ⚙️ Configuration
-
-Before deploying your squad, ensure your environment is ready.
-
-1.  **Gemini API Key:**
-    ```bash
-    export GEMINI_API_KEY="your_api_key_here"
-    ```
-
-2.  **GitHub Authentication:**
-    The squad needs to create PRs and Releases on your behalf.
-    ```bash
-    gh auth login
-    ```
-
-3.  **Git Identity:**
-    ```bash
-    git config --global user.name "Your Name"
-    git config --global user.email "you@example.com"
-    ```
-
----
+*Requires `git`, `gh` (GitHub CLI), and `gemini-cli`.*
 
 ## 🎮 Usage
 
-You can interact with the Squad in two ways: via the **Gemini CLI** (Agentic Mode) or directly via **Shell Scripts** (Manual Mode).
-
-### Method 1: Agentic Mode (Recommended)
-This requires the `squad-manager` skill to be active in your Gemini session.
-
+### 1. Deploy the Squad
+Initialize your project with a full team of agents.
 ```bash
-# Deploy the squad to the current directory
 gemini "/squad deploy"
-
-# Start a new mission
-gemini "/squad build 'Create a CLI tool to fetch weather data'"
 ```
 
-### Method 2: Manual Mode (Scripting)
-You can invoke the director script directly to bypass the chat interface.
-
+### 2. Give a Mission
+Launch a full development cycle.
 ```bash
-# Initialize a new project with the squad
-./scripts/deploy.sh
+gemini "/squad build 'Build a CLI tool to track crypto prices'"
+```
 
-# Run the Director with a mission
-./scripts/director.sh "Build a REST API using FastAPI"
+### 3. Call Specific Agents
+Need a quick fix? Call an agent directly.
+```bash
+gemini "/squad call grunt 'Fix the bug in main.py'"
 ```
 
 ---
 
-## 💡 Examples
+## 🔮 The Skywalker Workflow
+This tool enforces a strict, professional development philosophy:
+1.  **Architecture First.**
+2.  **Tests Before Code.**
+3.  **Audit Before Merge.**
+4.  **Automate Everything.**
 
-### Example 1: The Python CLI
-**Mission:** "Create a tool called 'weather-cli' that takes a city name and returns the temperature."
-
-**Workflow:**
-1.  **Architect** chooses Python + `typer` + `httpx`.
-2.  **Sentinel** writes `test_weather.py` checking for valid/invalid city inputs.
-3.  **DevOps** creates `pyproject.toml` and bumps version to `0.1.0`.
-4.  **Grunt** implements the API call logic.
-5.  **Gatekeeper** runs `pytest` and passes.
-6.  **UAT** installs the tool and runs `weather-cli London`.
-
-### Example 2: The Node.js Microservice
-**Mission:** "Create an Express.js server with a health check endpoint."
-
-**Workflow:**
-1.  **Architect** chooses Node.js + `express` + `typescript`.
-2.  **Sentinel** writes a `supertest` spec.
-3.  **DevOps** runs `npm init` and `npm version patch`.
-4.  **Grunt** writes `src/index.ts`.
-5.  **Gatekeeper** runs `npm test`.
+**Ready to fire your old workflow?**
+Deploy your Squad today.
 
 ---
-
-## 💻 Development
-
-We welcome contributions! Please follow the **Skywalker Development Workflow**:
-
-1.  **Branch:** Always work in a feature branch (`feature/my-feature`).
-2.  **Bump:** Increment the version in `pyproject.toml`.
-3.  **Gauntlet:** Ensure `uv run ruff check` and `uv run pytest` pass locally.
-4.  **PR:** Open a Pull Request via `gh pr create`.
-
----
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+*Powered by Gemini CLI & The Skywalker Workflow.*
