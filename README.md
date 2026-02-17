@@ -35,72 +35,124 @@ Your new team is ready to work 24/7. No coffee breaks. No complaints.
 *   **👿 Gatekeeper:** The enforcer. Strict CI/CD auditor that prevents bad code from reaching `master`.
 *   **🎮 UAT:** The user. Actually installs and verifies the application works as expected.
 
-### 🌐 Polyglot Powerhouse
-The Squad speaks your language. Whether it's **Python (uv)**, **Node.js (npm)**, or **Go (go mod)**, the agents adapt their tools and workflows automatically.
-
-### 🚫 The End of Babysitting
-Most AI coding tools require you to copy-paste code, fix imports, and debug errors. **Squad Manager** does the debugging for you. If a test fails, the Grunt fixes it. If the build breaks, DevOps repairs it. **You simply review the PR.**
-
 ---
 
 ## 🚀 Installation
 
-Install simply with `uv`:
+Since Squad Manager is a skill for the Gemini CLI, you can currently run it directly from the source.
 
-```bash
-uv tool install squad-manager
-```
+### Prerequisites
+*   **Git:** `sudo apt install git` (or equivalent)
+*   **GitHub CLI (gh):** `sudo apt install gh`
+*   **Python (uv):** `curl -LsSf https://astral.sh/uv/install.sh | sh`
+*   **Gemini CLI:** Ensure you have the Gemini CLI installed and configured.
 
-*Requires `git`, `gh` (GitHub CLI), and the `gemini-cli`.*
+### Setup
+1.  **Clone the Repository:**
+    ```bash
+    git clone https://github.com/charles-forsyth/squad-manager.git
+    cd squad-manager
+    ```
 
----
+2.  **Make Scripts Executable:**
+    ```bash
+    chmod +x scripts/*.sh
+    ```
 
-## 🎮 Usage
-
-### 1. Deploy the Squad
-Initialize your project with a full team of agents.
-```bash
-gemini "/squad deploy"
-```
-
-### 2. Give a Mission
-Launch a full development cycle.
-```bash
-gemini "/squad build 'Build a CLI tool to track crypto prices'"
-```
-
-### 3. Call Specific Agents
-Need a quick fix? Call an agent directly.
-```bash
-gemini "/squad call grunt 'Fix the bug in main.py'"
-```
+3.  **(Optional) Add to PATH:**
+    Add the `scripts` directory to your PATH to use `director.sh` directly.
+    ```bash
+    export PATH="$PWD/scripts:$PATH"
+    ```
 
 ---
 
 ## ⚙️ Configuration
 
-Squad Manager respects your environment. Ensure the following tools are configured:
+Before deploying your squad, ensure your environment is ready.
 
-- **Git:** Configured with your user name and email.
-- **GitHub CLI (gh):** Authenticated via `gh auth login`.
-- **Gemini CLI:** Installed and your API key set in `GEMINI_API_KEY`.
-- **uv:** Highly recommended for Python projects.
+1.  **Gemini API Key:**
+    ```bash
+    export GEMINI_API_KEY="your_api_key_here"
+    ```
+
+2.  **GitHub Authentication:**
+    The squad needs to create PRs and Releases on your behalf.
+    ```bash
+    gh auth login
+    ```
+
+3.  **Git Identity:**
+    ```bash
+    git config --global user.name "Your Name"
+    git config --global user.email "you@example.com"
+    ```
 
 ---
 
-## 🛠️ Troubleshooting
+## 🎮 Usage
 
-- **Agent Stalls:** If an agent seems stuck, check the logs or try calling them individually.
-- **Git Conflicts:** Squad Manager works best on clean repositories. If you have uncommitted changes, stash or commit them first.
-- **Model Errors:** Ensure you are using a supported model like `gemini-2.5-pro` for complex missions.
+You can interact with the Squad in two ways: via the **Gemini CLI** (Agentic Mode) or directly via **Shell Scripts** (Manual Mode).
+
+### Method 1: Agentic Mode (Recommended)
+This requires the `squad-manager` skill to be active in your Gemini session.
+
+```bash
+# Deploy the squad to the current directory
+gemini "/squad deploy"
+
+# Start a new mission
+gemini "/squad build 'Create a CLI tool to fetch weather data'"
+```
+
+### Method 2: Manual Mode (Scripting)
+You can invoke the director script directly to bypass the chat interface.
+
+```bash
+# Initialize a new project with the squad
+./scripts/deploy.sh
+
+# Run the Director with a mission
+./scripts/director.sh "Build a REST API using FastAPI"
+```
 
 ---
 
-**Ready to fire your old workflow?**
-Deploy your Squad today.
+## 💡 Examples
+
+### Example 1: The Python CLI
+**Mission:** "Create a tool called 'weather-cli' that takes a city name and returns the temperature."
+
+**Workflow:**
+1.  **Architect** chooses Python + `typer` + `httpx`.
+2.  **Sentinel** writes `test_weather.py` checking for valid/invalid city inputs.
+3.  **DevOps** creates `pyproject.toml` and bumps version to `0.1.0`.
+4.  **Grunt** implements the API call logic.
+5.  **Gatekeeper** runs `pytest` and passes.
+6.  **UAT** installs the tool and runs `weather-cli London`.
+
+### Example 2: The Node.js Microservice
+**Mission:** "Create an Express.js server with a health check endpoint."
+
+**Workflow:**
+1.  **Architect** chooses Node.js + `express` + `typescript`.
+2.  **Sentinel** writes a `supertest` spec.
+3.  **DevOps** runs `npm init` and `npm version patch`.
+4.  **Grunt** writes `src/index.ts`.
+5.  **Gatekeeper** runs `npm test`.
 
 ---
-*Powered by Gemini CLI & The Skywalker Workflow.*
+
+## 💻 Development
+
+We welcome contributions! Please follow the **Skywalker Development Workflow**:
+
+1.  **Branch:** Always work in a feature branch (`feature/my-feature`).
+2.  **Bump:** Increment the version in `pyproject.toml`.
+3.  **Gauntlet:** Ensure `uv run ruff check` and `uv run pytest` pass locally.
+4.  **PR:** Open a Pull Request via `gh pr create`.
+
+---
 
 ## License
 
