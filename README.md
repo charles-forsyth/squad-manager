@@ -82,7 +82,7 @@ gemini "/squad call grunt 'Fix the bug in main.py'"
 
 ---
 
-## 🔮 The Skywalker Workflow
+## 🔮 Directed Agentic Engineering
 This tool enforces a strict, professional development philosophy:
 1.  **Architecture First.**
 2.  **Tests Before Code.**
@@ -93,4 +93,4 @@ This tool enforces a strict, professional development philosophy:
 Deploy your Squad today.
 
 ---
-*Powered by Gemini CLI & The Skywalker Workflow.*
+*Directed Agentic Engineering | Empowered by Gemini CLI*
