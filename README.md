@@ -92,5 +92,18 @@ This tool enforces a strict, professional development philosophy:
 **Ready to fire your old workflow?**
 Deploy your Squad today.
 
+## 🛠️ Development
+
+To develop the Squad Manager:
+1. Clone the repository.
+2. Install dependencies with `uv sync`.
+3. Run the Gauntlet: `uv run ruff check .`, `uv run mypy .`, `uv run pytest`.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 ---
 *Directed Agentic Engineering | Empowered by Gemini CLI*
