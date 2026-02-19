@@ -1,77 +1,58 @@
-# Design Document: Squad Manager
+# Design Document: new-project
 
 ## 1. Project Overview
-**Mission:** Develop and maintain "Squad Manager", an autonomous development team for the Gemini CLI.
-**Goal:** Empower users to orchestrate a squad of specialized AI agents (Architect, DevOps, Sentinel, Grunt, Gatekeeper, UAT) to execute full engineering lifecycles—from architecture to release.
+**Mission:** Check for errors and publish.
+**Goal:** Implement an automated workflow to validate code quality (linting, type checking, testing) and handle the publishing process, adhering to the "Skywalker" standards.
 
 ## 2. Language & Stack Selection
 **Language:** Python 3.12+
-**Reasoning:** Python provides the ideal ecosystem for CLI tools and AI agent orchestration. The project leverages `uv` for superior dependency management and speed, aligning with the "Skywalker" workflow.
+**Reasoning:** Python is the primary language for the Skywalker ecosystem. Its toolchain (`uv`, `ruff`, `mypy`) provides the best support for "checking for errors", and its integration with GitHub Actions (`gh`) makes "publishing" seamless.
 
 ## 3. Toolchain & Standards
-We utilize the strict "Skywalker" standard toolchain:
-*   **Package Manager:** `uv` (for project management, virtual environments, and tool installation).
-*   **Linter/Formatter:** `ruff` (enforcing strict code style and quality).
-*   **Type Checker:** `mypy` (strict static typing).
-*   **Testing:** `pytest` (comprehensive unit and integration testing).
-*   **CI/CD:** GitHub Actions (automating the "Gatekeeper" checks).
+The project will enforce the "Local Gauntlet" and "Gatekeeper" standards:
+*   **Package Manager:** `uv`
+*   **Linter/Formatter:** `ruff`
+*   **Type Checker:** `mypy` (strict mode)
+*   **Testing:** `pytest`
+*   **Publishing Tool:** `uv build` and `gh release` / `twine` (if PyPI).
 
 ## 4. Architectural Layout
-The project follows a `src` layout with a clear separation of concerns for each agent persona.
+The project structure is designed to support automated validation and publishing.
 
 ```text
-squad-manager/
-├── .squad/                 # Agent-specific configurations and memory
-│   ├── architect/
-│   ├── devops/
-│   ├── gatekeeper/
-│   ├── grunt/
-│   ├── sentinel/
-│   └── uat/
-├── assets/                 # Static assets (templates, prompts)
-├── personas/               # Markdown definitions of agent personas
-├── scripts/                # Helper scripts for agent execution
+new-project/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml          # The "Gatekeeper": Runs the Gauntlet on PRs
+│       └── release.yml     # The "Publisher": Handles versioning and releases
 ├── src/
-│   └── squad_manager/      # Main package
+│   └── new_project/
 │       ├── __init__.py
-│       ├── core/           # Core logic for agent orchestration
-│       ├── agents/         # Implementation of individual agents
-│       └── utils/          # Shared utilities (git, gh, file ops)
-├── tests/                  # Test suite
+│       └── core.py         # Logic for error checking or the tool itself
+├── tests/
 │   ├── __init__.py
-│   └── test_*.py
+│   └── test_core.py      
 ├── .gitignore
 ├── .python-version
-├── pyproject.toml          # Central configuration
-├── README.md               # User documentation
-├── SKILL.md                # Gemini CLI skill definition
-└── uv.lock
+├── pyproject.toml          # Central configuration for all tools
+└── README.md               
 ```
 
 ## 5. Configuration (`pyproject.toml`)
-The project is configured for strict adherence to standards:
-
 ```toml
 [project]
-name = "squad-manager"
-version = "0.1.0" # Managed by DevOps/Semantic Versioning
-description = "The Ultimate Autonomous Development Team for Gemini CLI"
+name = "new-project"
+version = "0.1.0"
+description = "A Skywalker-standard project for automated error checking and publishing."
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
-    "typer",        # For CLI interface
-    "rich",         # For beautiful terminal output
-    "pydantic",     # For data validation
-    "google-generativeai", # For Gemini API interaction
-]
+dependencies = []
 
 [tool.uv]
 dev-dependencies = [
     "mypy>=1.0",
     "pytest>=8.0",
     "ruff>=0.3.0",
-    "types-requests",
-    "types-PyYAML",
 ]
 
 [tool.ruff]
@@ -79,7 +60,7 @@ line-length = 88
 target-version = "py312"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B", "UP"] 
+select = ["E", "F", "I", "B", "UP"]
 
 [tool.mypy]
 strict = true
@@ -87,8 +68,8 @@ python_version = "3.12"
 ```
 
 ## 6. Implementation Plan
-1.  **Core Framework**: Establish the `squad_manager` package structure and CLI entry point using `typer`.
-2.  **Agent Logic**: Implement the `Director` to parse prompts and dispatch tasks to specific agents.
-3.  **Integration**: Connect the `SKILL.md` to the Python CLI, allowing `gemini` to invoke `squad-manager` commands.
-4.  **Testing**: Develop a comprehensive test suite to verify agent interactions and tool execution.
-5.  **Release**: Use `uv tool` for easy installation and updates.
+1.  **Environment Setup**: Initialize with `uv init` and configure `pyproject.toml`.
+2.  **Validation Logic**: Implement or configure `ruff`, `mypy`, and `pytest` to ensure zero errors.
+3.  **CI/CD Integration**: Create GitHub Action workflows (`ci.yml`) to automate the "Gauntlet".
+4.  **Publishing Workflow**: Define the release process (version bumping, tagging, and deployment).
+5.  **Final Verification**: Manually trigger the Gauntlet and a dry-run of the publish command.
