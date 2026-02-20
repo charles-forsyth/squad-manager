@@ -31,7 +31,7 @@ def test_pyproject_has_project_section(pyproject_data: dict[str, Any]) -> None:
 
 
 def test_pyproject_dependencies(pyproject_data: dict[str, Any]) -> None:
-    """Test that required project dependencies (typer, rich, pydantic) are specified."""
+    """Test that required project dependencies are specified."""
     assert "project" in pyproject_data, "Missing [project] section"
     project = pyproject_data["project"]
 
@@ -41,6 +41,9 @@ def test_pyproject_dependencies(pyproject_data: dict[str, Any]) -> None:
     assert "typer" in deps_str, "typer is missing from dependencies."
     assert "rich" in deps_str, "rich is missing from dependencies."
     assert "pydantic" in deps_str, "pydantic is missing from dependencies."
+    assert "google-generativeai" in deps_str, (
+        "google-generativeai is missing from dependencies."
+    )
 
 
 def test_pyproject_dev_dependencies(pyproject_data: dict[str, Any]) -> None:

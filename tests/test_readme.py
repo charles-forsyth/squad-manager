@@ -52,3 +52,15 @@ def test_readme_mentions_new_model(project_root: Path) -> None:
     assert "gemini-3.1-pro-preview" in content, (
         "README.md must mention the gemini-3.1-pro-preview model."
     )
+
+
+def test_readme_mentions_verbose_flag(project_root: Path) -> None:
+    """Test that the README.md explicitly mentions the new verbose logging flags."""
+    readme_path = project_root / "README.md"
+    if not readme_path.exists():
+        pytest.fail("README.md does not exist, cannot check for verbose mention.")
+
+    content = readme_path.read_text(encoding="utf-8")
+    assert "--verbose" in content or "-v" in content, (
+        "README.md must mention the --verbose or -v logging flags."
+    )

@@ -99,6 +99,7 @@ To develop the Squad Manager:
 2. Install dependencies with `uv sync`.
 3. Run the Gauntlet: `uv run ruff check .`, `uv run mypy .`, `uv run pytest`.
 4. Note: Always use the `gemini-3.1-pro-preview` model for tasks.
+5. Use the `--verbose` or `-v` flag to enable debug logging.
 
 ---
 

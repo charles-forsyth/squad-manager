@@ -1,57 +1,58 @@
-# Design Document: new-project (Agent Calls Update)
+# Design Document: Stability & Logging Improvements
 
 ## 1. Project Overview
-**Mission:** Update our calls to our agents with a model declaration in the gemini CLI: `--yolo -r --model gemini-3.1-pro-preview`.
-**Goal:** Enhance the autonomous agent orchestration by explicitly defining the advanced reasoning model (`gemini-3.1-pro-preview`) and leveraging bypass flags (`--yolo`, `-r`) for seamless, uninterrupted execution.
+**Mission:** Implement a comprehensive stability review, deploy critical improvements, and add robust logging across the system.
+**Goal:** Enhance the reliability, observability, and debuggability of the Squad Manager application by establishing a uniform logging strategy and shoring up error handling around critical agent orchestrations and API calls.
 
 ## 2. Language & Stack Selection
 **Language:** Python 3.12+
-**Reasoning:** Since this updates the existing `squad-manager` infrastructure (or acts as a companion automation), Python remains the optimal choice. It provides robust tools (`subprocess`, `shlex`) for constructing and executing CLI commands, and aligns perfectly with the "Skywalker" development workflow.
+**Reasoning:** Since this is an enhancement to the existing `squad-manager` framework, we will continue using Python. The standard library's `logging` module (or an advanced library like `structlog` or `loguru`, though standard `logging` integrated with `rich` is preferred for CLI tools) provides exactly what is needed to fulfill this mission while conforming to the project's ecosystem.
 
 ## 3. Toolchain & Standards
-The update will strictly adhere to the project's established "Skywalker" standard toolchain:
-*   **Package Manager:** `uv` (for rapid dependency management).
-*   **Linter/Formatter:** `ruff` (to maintain clean, consistent command construction logic).
-*   **Type Checker:** `mypy` (strict mode, to ensure type safety when passing command arguments).
-*   **Testing:** `pytest` (to mock CLI calls and verify the correct flags are appended).
-*   **CI/CD:** GitHub Actions (for automated validation before merging).
+The update adheres to the strict "Skywalker Development Workflow":
+*   **Package Manager:** `uv` (for ensuring consistent environments while testing improvements).
+*   **Linter/Formatter:** `ruff` (to enforce clean syntax around logging statements).
+*   **Type Checker:** `mypy` (strict mode, to catch potential regressions introduced during the stability review).
+*   **Testing:** `pytest` (to verify that logging outputs correctly without breaking core logic).
+*   **CI/CD:** GitHub Actions (for validating the Gauntlet on the stability feature branch).
 
 ## 4. Architectural Layout
-The core changes will occur within the existing agent dispatch/calling logic.
+Changes will be distributed across the core agent modules, establishing a central logging configuration.
 
 ```text
 squad-manager/
-├── .github/
-│   └── workflows/
-│       └── ci.yml          # Executes the Gauntlet on PRs
 ├── src/
 │   └── squad_manager/
 │       ├── __init__.py
-│       └── core/
-│           └── dispatcher.py # Target file: update the gemini CLI invocation logic
+│       ├── utils/
+│       │   └── logger.py       # NEW: Centralized logging configuration
+│       ├── core/
+│       │   └── dispatcher.py   # Add robust try/except blocks and trace logging
+│       └── agents/
+│           └── base.py         # Ensure all agents inherit standard logging methods
 ├── tests/
 │   ├── __init__.py
-│   └── test_dispatcher.py  # Target file: add tests to verify the new flags
+│   └── test_logger.py          # NEW: Verify logging initialization and levels
 ├── .gitignore
-├── .python-version
-├── pyproject.toml          # Enforces the toolchain standards
-└── README.md               # Must be updated to document the new model usage
+├── pyproject.toml              
+└── README.md                   # Document the new debugging/logging flags (e.g., --verbose)
 ```
 
 ## 5. Configuration (`pyproject.toml`)
-Ensure the project maintains its strict configuration:
+The project maintains its core configuration. If a third-party logging library is chosen over `rich.logging`, it would be added here. Currently assuming standard library `logging` enhanced by `rich`.
 
 ```toml
 [project]
 name = "squad-manager"
 version = "0.1.0"
-description = "Autonomous Development Team - Updated to gemini-3.1-pro-preview"
+description = "Autonomous Development Team - Stability & Logging Update"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "typer",
-    "rich",
+    "rich",         # Contains rich.logging.RichHandler
     "pydantic",
+    "google-generativeai",
 ]
 
 [tool.uv]
@@ -74,9 +75,12 @@ python_version = "3.12"
 ```
 
 ## 6. Implementation Plan
-1.  **Codebase Investigation**: Locate the exact functions where the `gemini` command is constructed and dispatched to the agents (likely in `dispatcher.py` or similar).
-2.  **Implementation**: Update the command construction logic to append the required flags: `--yolo -r --model gemini-3.1-pro-preview`.
-3.  **Testing Strategy**: Update or write new `pytest` cases that mock the `subprocess.run` (or equivalent) call to assert that the constructed command string correctly includes the new flags.
-4.  **Local Gauntlet**: Run `ruff check`, `ruff format`, `mypy`, and `pytest` locally to ensure no regressions.
-5.  **Documentation**: Update the `README.md` to indicate that the agents now default to the `gemini-3.1-pro-preview` model.
-6.  **Release**: Commit via a feature branch, create a PR, and merge following the Skywalker workflow.
+1.  **Logging Infrastructure**: Create `src/squad_manager/utils/logger.py` configuring a structured, leveled logging system (DEBUG, INFO, WARNING, ERROR, CRITICAL) utilizing `rich.logging.RichHandler` for clean CLI output.
+2.  **Stability Audit**: Review all subprocess calls (e.g., `git`, `gh`, `uv`), API calls to Gemini, and file operations. Wrap vulnerable calls in specific `try/except` blocks.
+3.  **Instrumentation**: Inject logging statements:
+    *   `INFO`: High-level workflow progress (e.g., "Agent Architect deployed").
+    *   `DEBUG`: Command strings, payload data, and intermediate state (e.g., "Running command: `uv run pytest`").
+    *   `ERROR`: Exception stack traces and failure contexts.
+4.  **CLI Updates**: Add a `--verbose` or `-v` flag to the main `typer` entry point to dynamically set the log level to `DEBUG`.
+5.  **Local Gauntlet**: Run `uv run ruff check . --fix`, `uv run ruff format .`, `uv run mypy src`, and `uv run pytest` to ensure the logging integration introduces no regressions.
+6.  **Release**: Branch (`feature/stability-logging`), push, PR, merge, and upgrade.
