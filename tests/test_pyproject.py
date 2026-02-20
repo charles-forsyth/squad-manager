@@ -30,16 +30,26 @@ def test_pyproject_has_project_section(pyproject_data: dict[str, Any]) -> None:
     assert "requires-python" in project, "Project requires-python is missing."
 
 
+def test_pyproject_dependencies(pyproject_data: dict[str, Any]) -> None:
+    """Test that required project dependencies (typer, rich, pydantic) are specified."""
+    assert "project" in pyproject_data, "Missing [project] section"
+    project = pyproject_data["project"]
+
+    deps = project.get("dependencies", [])
+    deps_str = " ".join(deps).lower()
+
+    assert "typer" in deps_str, "typer is missing from dependencies."
+    assert "rich" in deps_str, "rich is missing from dependencies."
+    assert "pydantic" in deps_str, "pydantic is missing from dependencies."
+
+
 def test_pyproject_dev_dependencies(pyproject_data: dict[str, Any]) -> None:
     """Test that required dev dependencies (pytest, ruff, mypy) are specified."""
-    # Assuming uv dev dependencies in [tool.uv.dev-dependencies] or [dependency-groups]
-    # For now checking tool.uv
     assert "tool" in pyproject_data, "Missing [tool] section"
     assert "uv" in pyproject_data["tool"], "Missing [tool.uv] section"
 
     dev_deps = pyproject_data["tool"]["uv"].get("dev-dependencies", [])
 
-    # Convert dependencies to string for easier matching
     dev_deps_str = " ".join(dev_deps).lower()
 
     assert "pytest" in dev_deps_str, "pytest is missing from dev-dependencies."

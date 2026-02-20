@@ -1,52 +1,58 @@
-# Design Document: new-project
+# Design Document: new-project (Agent Calls Update)
 
 ## 1. Project Overview
-**Mission:** Check for errors and publish.
-**Goal:** Implement an automated workflow to validate code quality (linting, type checking, testing) and handle the publishing process, adhering to the "Skywalker" standards.
+**Mission:** Update our calls to our agents with a model declaration in the gemini CLI: `--yolo -r --model gemini-3.1-pro-preview`.
+**Goal:** Enhance the autonomous agent orchestration by explicitly defining the advanced reasoning model (`gemini-3.1-pro-preview`) and leveraging bypass flags (`--yolo`, `-r`) for seamless, uninterrupted execution.
 
 ## 2. Language & Stack Selection
 **Language:** Python 3.12+
-**Reasoning:** Python is the primary language for the Skywalker ecosystem. Its toolchain (`uv`, `ruff`, `mypy`) provides the best support for "checking for errors", and its integration with GitHub Actions (`gh`) makes "publishing" seamless.
+**Reasoning:** Since this updates the existing `squad-manager` infrastructure (or acts as a companion automation), Python remains the optimal choice. It provides robust tools (`subprocess`, `shlex`) for constructing and executing CLI commands, and aligns perfectly with the "Skywalker" development workflow.
 
 ## 3. Toolchain & Standards
-The project will enforce the "Local Gauntlet" and "Gatekeeper" standards:
-*   **Package Manager:** `uv`
-*   **Linter/Formatter:** `ruff`
-*   **Type Checker:** `mypy` (strict mode)
-*   **Testing:** `pytest`
-*   **Publishing Tool:** `uv build` and `gh release` / `twine` (if PyPI).
+The update will strictly adhere to the project's established "Skywalker" standard toolchain:
+*   **Package Manager:** `uv` (for rapid dependency management).
+*   **Linter/Formatter:** `ruff` (to maintain clean, consistent command construction logic).
+*   **Type Checker:** `mypy` (strict mode, to ensure type safety when passing command arguments).
+*   **Testing:** `pytest` (to mock CLI calls and verify the correct flags are appended).
+*   **CI/CD:** GitHub Actions (for automated validation before merging).
 
 ## 4. Architectural Layout
-The project structure is designed to support automated validation and publishing.
+The core changes will occur within the existing agent dispatch/calling logic.
 
 ```text
-new-project/
+squad-manager/
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml          # The "Gatekeeper": Runs the Gauntlet on PRs
-│       └── release.yml     # The "Publisher": Handles versioning and releases
+│       └── ci.yml          # Executes the Gauntlet on PRs
 ├── src/
-│   └── new_project/
+│   └── squad_manager/
 │       ├── __init__.py
-│       └── core.py         # Logic for error checking or the tool itself
+│       └── core/
+│           └── dispatcher.py # Target file: update the gemini CLI invocation logic
 ├── tests/
 │   ├── __init__.py
-│   └── test_core.py      
+│   └── test_dispatcher.py  # Target file: add tests to verify the new flags
 ├── .gitignore
 ├── .python-version
-├── pyproject.toml          # Central configuration for all tools
-└── README.md               
+├── pyproject.toml          # Enforces the toolchain standards
+└── README.md               # Must be updated to document the new model usage
 ```
 
 ## 5. Configuration (`pyproject.toml`)
+Ensure the project maintains its strict configuration:
+
 ```toml
 [project]
-name = "new-project"
+name = "squad-manager"
 version = "0.1.0"
-description = "A Skywalker-standard project for automated error checking and publishing."
+description = "Autonomous Development Team - Updated to gemini-3.1-pro-preview"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "typer",
+    "rich",
+    "pydantic",
+]
 
 [tool.uv]
 dev-dependencies = [
@@ -68,8 +74,9 @@ python_version = "3.12"
 ```
 
 ## 6. Implementation Plan
-1.  **Environment Setup**: Initialize with `uv init` and configure `pyproject.toml`.
-2.  **Validation Logic**: Implement or configure `ruff`, `mypy`, and `pytest` to ensure zero errors.
-3.  **CI/CD Integration**: Create GitHub Action workflows (`ci.yml`) to automate the "Gauntlet".
-4.  **Publishing Workflow**: Define the release process (version bumping, tagging, and deployment).
-5.  **Final Verification**: Manually trigger the Gauntlet and a dry-run of the publish command.
+1.  **Codebase Investigation**: Locate the exact functions where the `gemini` command is constructed and dispatched to the agents (likely in `dispatcher.py` or similar).
+2.  **Implementation**: Update the command construction logic to append the required flags: `--yolo -r --model gemini-3.1-pro-preview`.
+3.  **Testing Strategy**: Update or write new `pytest` cases that mock the `subprocess.run` (or equivalent) call to assert that the constructed command string correctly includes the new flags.
+4.  **Local Gauntlet**: Run `ruff check`, `ruff format`, `mypy`, and `pytest` locally to ensure no regressions.
+5.  **Documentation**: Update the `README.md` to indicate that the agents now default to the `gemini-3.1-pro-preview` model.
+6.  **Release**: Commit via a feature branch, create a PR, and merge following the Skywalker workflow.

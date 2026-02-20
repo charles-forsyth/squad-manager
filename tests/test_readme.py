@@ -40,3 +40,15 @@ def test_readme_required_sections(project_root: Path) -> None:
     assert not missing_sections, (
         f"README.md is missing required sections: {missing_sections}"
     )
+
+
+def test_readme_mentions_new_model(project_root: Path) -> None:
+    """Test README explicit mention of new gemini-3.1-pro-preview model."""
+    readme_path = project_root / "README.md"
+    if not readme_path.exists():
+        pytest.fail("README.md does not exist, cannot check for model mention.")
+
+    content = readme_path.read_text(encoding="utf-8")
+    assert "gemini-3.1-pro-preview" in content, (
+        "README.md must mention the gemini-3.1-pro-preview model."
+    )
